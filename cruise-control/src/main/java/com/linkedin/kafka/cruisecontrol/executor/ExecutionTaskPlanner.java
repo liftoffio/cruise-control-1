@@ -4,7 +4,6 @@
 
 package com.linkedin.kafka.cruisecontrol.executor;
 
-import com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils;
 import com.linkedin.kafka.cruisecontrol.config.KafkaCruiseControlConfig;
 import com.linkedin.kafka.cruisecontrol.executor.strategy.BaseReplicaMovementStrategy;
 import com.linkedin.kafka.cruisecontrol.executor.strategy.ReplicaMovementStrategy;
@@ -228,8 +227,7 @@ public class ExecutionTaskPlanner {
             // involved in this round.
             int sourceBroker = task.proposal().oldLeader();
             Set<Integer> destinationBrokers = task.proposal().replicasToAdd();
-            if (brokerInvolved.contains(sourceBroker)
-                || KafkaCruiseControlUtils.containsAny(brokerInvolved, destinationBrokers)) {
+            if (brokerInvolved.contains(sourceBroker)) {
               continue;
             }
             TopicPartition tp = task.proposal().topicPartition();
