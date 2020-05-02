@@ -184,6 +184,30 @@ public class Broker implements Serializable, Comparable<Broker> {
     return _state != State.DEAD;
   }
 
+
+  /** Get leader replicas for topic.
+   *
+           * @param topic Topic of the requested replicas.
+          * @return Leader replicas in this broker sharing the given topic.
+   */
+  public Collection<Replica> leadersOfTopicInBroker(String topic) {
+    Map<Integer, Replica> topicReplicas = _topicReplicas.get(topic);
+    Collection<Replica> values = topicReplicas.values();
+    values.removeIf(i -> !i.isLeader());
+    return topicReplicas == null ? Collections.emptySet() : topicReplicas.values();
+  }
+
+  /**
+   * Get number of leader replicas from the given topic in this broker.
+   *
+   * @param topic Topic for which the replica count will be returned.
+   * @return The number of leader replicas from the given topic in this broker.
+   */
+  public int numLeadersOfTopicInBroker(String topic) {
+    return leadersOfTopicInBroker(topic).size();
+  }
+
+
   /**
    * Check if the broker is a new broker
    */

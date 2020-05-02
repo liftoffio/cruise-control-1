@@ -348,6 +348,14 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
       + "should not be above 1.80x of average replica count of all brokers for the same topic.";
 
   /**
+   * <code>topic.replica.count.balance.threshold</code>
+   */
+  public static final String TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG = "topic.leader.count.balance.threshold";
+  private static final String TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_DOC = "The maximum allowed extent of unbalance for "
+          + "leader distribution from each topic. For example, 1.80 means the highest topic leader count of a broker "
+          + "should not be above 1.80x of average leader count of all brokers for the same topic.";
+
+  /**
    * <code>goal.violation.distribution.threshold.multiplier</code>
    */
   public static final String GOAL_VIOLATION_DISTRIBUTION_THRESHOLD_MULTIPLIER_CONFIG = "goal.violation.distribution.threshold.multiplier";

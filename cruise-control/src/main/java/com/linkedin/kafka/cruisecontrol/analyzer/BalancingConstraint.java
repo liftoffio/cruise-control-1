@@ -25,6 +25,7 @@ public class BalancingConstraint {
   private final Double _replicaBalancePercentage;
   private final Double _leaderReplicaBalancePercentage;
   private final Double _topicReplicaBalancePercentage;
+  private final Double _topicLeaderBalancePercentage;
   private final Double _goalViolationDistributionThresholdMultiplier;
   private final Map<Resource, Double> _capacityThreshold;
   private final Map<Resource, Double> _lowUtilizationThreshold;
@@ -63,6 +64,7 @@ public class BalancingConstraint {
     _replicaBalancePercentage = config.getDouble(KafkaCruiseControlConfig.REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG);
     _leaderReplicaBalancePercentage = config.getDouble(KafkaCruiseControlConfig.LEADER_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG);
     _topicReplicaBalancePercentage = config.getDouble(KafkaCruiseControlConfig.TOPIC_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG);
+    _topicLeaderBalancePercentage = config.getDouble(KafkaCruiseControlConfig.TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG);
     _goalViolationDistributionThresholdMultiplier = config.getDouble(KafkaCruiseControlConfig.GOAL_VIOLATION_DISTRIBUTION_THRESHOLD_MULTIPLIER_CONFIG);
   }
 
@@ -86,6 +88,7 @@ public class BalancingConstraint {
     props.put(KafkaCruiseControlConfig.REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG, _replicaBalancePercentage.toString());
     props.put(KafkaCruiseControlConfig.LEADER_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG, _leaderReplicaBalancePercentage.toString());
     props.put(KafkaCruiseControlConfig.TOPIC_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG, _topicReplicaBalancePercentage.toString());
+    props.put(KafkaCruiseControlConfig.TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG, _topicLeaderBalancePercentage.toString());
     props.put(KafkaCruiseControlConfig.GOAL_VIOLATION_DISTRIBUTION_THRESHOLD_MULTIPLIER_CONFIG,
               _goalViolationDistributionThresholdMultiplier.toString());
     return props;
@@ -128,7 +131,20 @@ public class BalancingConstraint {
   }
 
   /**
+<<<<<<< HEAD
    * Get goal violation distribution threshold multiplier to be used in detection and fixing goal violations.
+=======
+   * @return Topic replica balance percentage for
+   * {@link com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicLeaderDistributionGoal}.
+   */
+  public Double topicLeaderBalancePercentage() {
+    return _topicLeaderBalancePercentage;
+  }
+
+
+  /**
+   * @return Goal violation distribution threshold multiplier to be used in detection and fixing goal violations.
+>>>>>>> d3bfe624... WIP Leader Goal
    */
   public Double goalViolationDistributionThresholdMultiplier() {
     return _goalViolationDistributionThresholdMultiplier;
@@ -221,12 +237,14 @@ public class BalancingConstraint {
                          + "inboundNwBalancePercentage=%.4f,outboundNwBalancePercentage=%.4f,cpuCapacityThreshold=%.4f,"
                          + "diskCapacityThreshold=%.4f,inboundNwCapacityThreshold=%.4f,outboundNwCapacityThreshold=%.4f,"
                          + "maxReplicasPerBroker=%d,replicaBalancePercentage=%.4f,leaderReplicaBalancePercentage=%.4f,"
-                         + "topicReplicaBalancePercentage=%.4f,goalViolationDistributionThresholdMultiplier=%.4f]",
+                         + "topicReplicaBalancePercentage=%.4f,topicReplicaBalancePercentage=%.4f,"
+                         + "goalViolationDistributionThresholdMultiplier=%.4f]",
                          _resourceBalancePercentage.get(Resource.CPU), _resourceBalancePercentage.get(Resource.DISK),
                          _resourceBalancePercentage.get(Resource.NW_IN), _resourceBalancePercentage.get(Resource.NW_OUT),
                          _capacityThreshold.get(Resource.CPU), _capacityThreshold.get(Resource.DISK),
                          _capacityThreshold.get(Resource.NW_IN), _capacityThreshold.get(Resource.NW_OUT),
                          _maxReplicasPerBroker, _replicaBalancePercentage, _leaderReplicaBalancePercentage,
-                         _topicReplicaBalancePercentage, _goalViolationDistributionThresholdMultiplier);
+                         _topicReplicaBalancePercentage, _topicLeaderBalancePercentage,
+                         _goalViolationDistributionThresholdMultiplier);
   }
 }
