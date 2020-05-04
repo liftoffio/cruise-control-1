@@ -1228,6 +1228,12 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
                 atLeast(1),
                 ConfigDef.Importance.HIGH,
                 TOPIC_REPLICA_COUNT_BALANCE_THRESHOLD_DOC)
+        .define(TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG,
+                ConfigDef.Type.DOUBLE,
+                3.00,
+                atLeast(1),
+                ConfigDef.Importance.HIGH,
+                TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_DOC)
         .define(GOAL_VIOLATION_DISTRIBUTION_THRESHOLD_MULTIPLIER_CONFIG,
                 ConfigDef.Type.DOUBLE,
                 1.00,
