@@ -131,20 +131,7 @@ public class BalancingConstraint {
   }
 
   /**
-<<<<<<< HEAD
    * Get goal violation distribution threshold multiplier to be used in detection and fixing goal violations.
-=======
-   * @return Topic replica balance percentage for
-   * {@link com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicLeaderDistributionGoal}.
-   */
-  public Double topicLeaderBalancePercentage() {
-    return _topicLeaderBalancePercentage;
-  }
-
-
-  /**
-   * @return Goal violation distribution threshold multiplier to be used in detection and fixing goal violations.
->>>>>>> d3bfe624... WIP Leader Goal
    */
   public Double goalViolationDistributionThresholdMultiplier() {
     return _goalViolationDistributionThresholdMultiplier;

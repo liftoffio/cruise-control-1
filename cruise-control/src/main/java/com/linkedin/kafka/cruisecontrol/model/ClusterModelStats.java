@@ -118,18 +118,14 @@ public class ClusterModelStats {
   }
 
   /**
-<<<<<<< HEAD
-   * Get number of brokers for the cluster instance that the object was populated with.
-=======
-   * @return Topic leader stats for the cluster instance that the object was populated with.
+   * Get topic leader stats for the cluster instance that the object was populated with.
    */
   public Map<Statistic, Number> topicLeaderStats() {
     return _topicLeaderStats;
   }
 
   /**
-   * @return The number of brokers for the cluster instance that the object was populated with.
->>>>>>> d3bfe624... WIP Leader Goal
+   * Get number of brokers for the cluster instance that the object was populated with.
    */
   public int numBrokers() {
     return _numBrokers;
@@ -251,7 +247,7 @@ public class ClusterModelStats {
                               AnalyzerUtils.REPLICAS, replicaStats().get(stat),
                               AnalyzerUtils.LEADER_REPLICAS, leaderReplicaStats().get(stat),
                               AnalyzerUtils.TOPIC_REPLICAS, topicReplicaStats().get(stat),
-                              AnalyzerUtils.TOPIC_LEADERS, topicLeaderStats().get(stat)))q;
+                              AnalyzerUtils.TOPIC_LEADERS, topicLeaderStats().get(stat)));
     }
     return sb.substring(0, sb.length() - 2);
   }
