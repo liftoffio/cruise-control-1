@@ -177,14 +177,6 @@ public class Broker implements Serializable, Comparable<Broker> {
     return topicReplicas == null ? 0 : topicReplicas.size();
   }
 
-  /**
-   * Check broker liveness status.
-   */
-  public boolean isAlive() {
-    return _state != State.DEAD;
-  }
-
-
   /** Get leader replicas for topic.
    *
            * @param topic Topic of the requested replicas.
@@ -192,9 +184,10 @@ public class Broker implements Serializable, Comparable<Broker> {
    */
   public Collection<Replica> leadersOfTopicInBroker(String topic) {
     Map<Integer, Replica> topicReplicas = _topicReplicas.get(topic);
+    if (topicReplicas == null) return Collections.emptySet();
     Collection<Replica> values = topicReplicas.values();
     values.removeIf(i -> !i.isLeader());
-    return topicReplicas == null ? Collections.emptySet() : topicReplicas.values();
+    return values;
   }
 
   /**
@@ -205,6 +198,13 @@ public class Broker implements Serializable, Comparable<Broker> {
    */
   public int numLeadersOfTopicInBroker(String topic) {
     return leadersOfTopicInBroker(topic).size();
+  }
+
+  /**
+   * Check broker liveness status.
+   */
+  public boolean isAlive() {
+    return _state != State.DEAD;
   }
 
 
