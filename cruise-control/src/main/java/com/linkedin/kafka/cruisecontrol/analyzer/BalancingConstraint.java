@@ -131,6 +131,15 @@ public class BalancingConstraint {
   }
 
   /**
+   * Get topic leader balance percentage for
+   * {@link com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicLeaderDistributionGoal}.
+   */
+  public Double topicLeaderBalancePercentage() {
+    return _topicLeaderBalancePercentage;
+  }
+
+
+  /**
    * Get goal violation distribution threshold multiplier to be used in detection and fixing goal violations.
    */
   public Double goalViolationDistributionThresholdMultiplier() {

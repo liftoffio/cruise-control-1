@@ -82,8 +82,8 @@ public class TopicLeaderDistributionGoal extends AbstractGoal {
 
   /**
    * To avoid churns, we add a balance margin to the user specified rebalance threshold. e.g. when user sets the
-   * threshold to be {@link BalancingConstraint#topicReplicaBalancePercentage()}, we use
-   * ({@link BalancingConstraint#topicReplicaBalancePercentage()}-1)*{@link #BALANCE_MARGIN} instead.
+   * threshold to be {@link BalancingConstraint#topicLeaderBalancePercentage()}, we use
+   * ({@link BalancingConstraint#topicLeaderBalancePercentage()}-1)*{@link #BALANCE_MARGIN} instead.
    *
    * @param optimizationOptions Options to adjust balance percentage with margin in case goal optimization is triggered
    * by goal violation detector.
@@ -91,9 +91,9 @@ public class TopicLeaderDistributionGoal extends AbstractGoal {
    */
   private double balancePercentageWithMargin(OptimizationOptions optimizationOptions) {
     double balancePercentage = optimizationOptions.isTriggeredByGoalViolation()
-                               ? _balancingConstraint.topicReplicaBalancePercentage()
+                               ? _balancingConstraint.topicLeaderBalancePercentage()
                                  * _balancingConstraint.goalViolationDistributionThresholdMultiplier()
-                               : _balancingConstraint.topicReplicaBalancePercentage();
+                               : _balancingConstraint.topicLeaderBalancePercentage();
 
     return (balancePercentage - 1) * BALANCE_MARGIN;
   }
