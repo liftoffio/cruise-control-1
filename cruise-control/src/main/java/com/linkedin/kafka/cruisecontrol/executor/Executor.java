@@ -59,11 +59,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 
+<<<<<<< HEAD
 import static com.linkedin.cruisecontrol.CruiseControlUtils.currentUtcDate;
 import static com.linkedin.cruisecontrol.CruiseControlUtils.utcDateFor;
 import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.*;
 import static com.linkedin.kafka.cruisecontrol.detector.AnomalyDetectorUtils.*;
 import static com.linkedin.kafka.cruisecontrol.executor.ExecutionUtils.*;
+=======
+import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.currentUtcDate;
+import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.toDateString;
+import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.OPERATION_LOGGER;
+import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.TIME_ZONE;
+import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.DATE_FORMAT;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
 import static com.linkedin.kafka.cruisecontrol.executor.ExecutorState.State.*;
 import static com.linkedin.kafka.cruisecontrol.executor.ExecutionTask.TaskType.*;
 import static com.linkedin.kafka.cruisecontrol.executor.ExecutionTaskTracker.ExecutionTasksSummary;
@@ -83,7 +91,12 @@ import static com.linkedin.cruisecontrol.common.utils.Utils.validateNotNull;
 public class Executor {
   private static final Logger LOG = LoggerFactory.getLogger(Executor.class);
   private static final Logger OPERATION_LOG = LoggerFactory.getLogger(OPERATION_LOGGER);
+<<<<<<< HEAD
   private static final long EXECUTION_PROGRESS_CHECK_INTERVAL_ADJUSTING_MS = 1000;
+=======
+  private static final String ZK_EXECUTOR_METRIC_GROUP = "CruiseControlExecutor";
+  private static final String ZK_EXECUTOR_METRIC_TYPE = "Executor";
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   // The execution progress is controlled by the ExecutionTaskManager.
   private final ExecutionTaskManager _executionTaskManager;
   private final MetadataClient _metadataClient;
@@ -126,11 +139,17 @@ public class Executor {
   private final AnomalyDetectorManager _anomalyDetectorManager;
   private final ConcurrencyAdjuster _concurrencyAdjuster;
   private final ScheduledExecutorService _concurrencyAdjusterExecutor;
+<<<<<<< HEAD
   private final ConcurrentMap<ConcurrencyType, Boolean> _concurrencyAdjusterEnabled;
   private volatile boolean _concurrencyAdjusterMinIsrCheckEnabled;
   private final TopicMinIsrCache _topicMinIsrCache;
   private final long _minExecutionProgressCheckIntervalMs;
   private final long _slowTaskAlertingBackoffTimeMs;
+=======
+  private volatile boolean _concurrencyAdjusterEnabled;
+  private final long _minExecutionProgressCheckIntervalMs;
+  public final long _slowTaskAlertingBackoffTimeMs;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   private final KafkaCruiseControlConfig _config;
   private final AtomicDouble _partitionMovementCountPerSec;
   private final AtomicDouble _partitionMovementMbPerSec;
@@ -224,6 +243,7 @@ public class Executor {
     _removalHistoryRetentionTimeMs = config.getLong(ExecutorConfig.REMOVAL_HISTORY_RETENTION_TIME_MS_CONFIG);
     _minExecutionProgressCheckIntervalMs = config.getLong(ExecutorConfig.MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG);
     _slowTaskAlertingBackoffTimeMs = config.getLong(ExecutorConfig.SLOW_TASK_ALERTING_BACKOFF_TIME_MS_CONFIG);
+<<<<<<< HEAD
     _concurrencyAdjusterEnabled = new ConcurrentHashMap<>(ConcurrencyType.cachedValues().size());
     _concurrencyAdjusterEnabled.put(ConcurrencyType.INTER_BROKER_REPLICA,
                                     config.getBoolean(ExecutorConfig.CONCURRENCY_ADJUSTER_INTER_BROKER_REPLICA_ENABLED_CONFIG));
@@ -234,6 +254,9 @@ public class Executor {
     // Support for intra-broker replica movement is pending https://github.com/linkedin/cruise-control/issues/1299.
     _concurrencyAdjusterEnabled.put(ConcurrencyType.INTRA_BROKER_REPLICA, false);
     _concurrencyAdjusterMinIsrCheckEnabled = config.getBoolean(ExecutorConfig.CONCURRENCY_ADJUSTER_MIN_ISR_CHECK_ENABLED_CONFIG);
+=======
+    _concurrencyAdjusterEnabled = config.getBoolean(ExecutorConfig.CONCURRENCY_ADJUSTER_ENABLED_CONFIG);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     _concurrencyAdjusterExecutor = Executors.newSingleThreadScheduledExecutor(
         new KafkaCruiseControlThreadFactory(ConcurrencyAdjuster.class.getSimpleName()));
     int numMinIsrCheck = config.getInt(ExecutorConfig.CONCURRENCY_ADJUSTER_NUM_MIN_ISR_CHECK_CONFIG);
@@ -1632,12 +1655,17 @@ public class Executor {
                  finishedDataMovementInMB, totalDataToMoveInMB,
                  totalDataToMoveInMB == 0 ? 100 : String.format("%.2f", finishedDataMovementInMB * UNIT_INTERVAL_TO_PERCENTAGE
                                                                         / totalDataToMoveInMB));
+<<<<<<< HEAD
         List<ExecutionTask> inProgressTasks = tasksToExecute.stream()
             .filter(t -> t.state() == ExecutionTaskState.IN_PROGRESS)
             .collect(Collectors.toList());
         inProgressTasks.addAll(inExecutionTasks());
 
         throttleHelper.clearThrottles(completedTasks, inProgressTasks);
+=======
+        throttleHelper.clearThrottles(completedTasks,
+                tasksToExecute.stream().filter(t -> t.state() == ExecutionTaskState.IN_PROGRESS).collect(Collectors.toList()));
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
       }
 
       // Currently, _executionProgressCheckIntervalMs is only runtime adjusted for inter broker move tasks, not
@@ -1653,7 +1681,11 @@ public class Executor {
         Map<ExecutionTaskState, Integer> partitionMovementTasksByState = executionTasksSummary.taskStat().get(INTER_BROKER_REPLICA_ACTION);
         LOG.info("Inter-broker partition movements stopped. For inter-broker partition movements {} tasks cancelled, {} tasks in-progress, "
                  + "{} tasks aborting, {} tasks aborted, {} tasks dead, {} tasks completed, {} remaining data to move; for intra-broker "
+<<<<<<< HEAD
                  + "partition movement {} tasks cancelled; for leadership movements {} tasks cancelled.",
+=======
+                 + "partition movement {} tasks cancelled; for leadership movements {} task cancelled.",
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
                  partitionMovementTasksByState.get(ExecutionTaskState.PENDING),
                  partitionMovementTasksByState.get(ExecutionTaskState.IN_PROGRESS),
                  partitionMovementTasksByState.get(ExecutionTaskState.ABORTING),
@@ -1711,7 +1743,11 @@ public class Executor {
         Map<ExecutionTaskState, Integer> partitionMovementTasksByState = executionTasksSummary.taskStat().get(INTRA_BROKER_REPLICA_ACTION);
         LOG.info("Intra-broker partition movements stopped. For intra-broker partition movements {} tasks cancelled, {} tasks in-progress, "
                  + "{} tasks aborting, {} tasks aborted, {} tasks dead, {} tasks completed, {} remaining data to move; for leadership "
+<<<<<<< HEAD
                  + "movements {} tasks cancelled.",
+=======
+                 + "movements {} task cancelled.",
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
                  partitionMovementTasksByState.get(ExecutionTaskState.PENDING),
                  partitionMovementTasksByState.get(ExecutionTaskState.IN_PROGRESS),
                  partitionMovementTasksByState.get(ExecutionTaskState.ABORTING),
@@ -1818,6 +1854,7 @@ public class Executor {
         List<ExecutionTask> deadInterBrokerReplicaTasks = new ArrayList<>();
         List<ExecutionTask> stoppedInterBrokerReplicaTasks = new ArrayList<>();
         List<ExecutionTask> slowTasksToReport = new ArrayList<>();
+<<<<<<< HEAD
         final int numInExecutionTasks = inExecutionTasks().size();
         // numFinishedOrDeletedTasks instead of finishedTasks.size() is used to decide whether to dynamically adjust
         // executionProgressCheckIntervalMs.
@@ -1825,6 +1862,8 @@ public class Executor {
         // If the destination broker is dead, it may not be safe to increase numFinishedOrDeletedTasks as it may not be safe
         // to speed up inter broker replica move with new broker being down.
         int numFinishedOrDeletedTasks = 0;
+=======
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
         boolean shouldReportSlowTasks = _time.milliseconds() - _lastSlowTaskReportingTimeMs > _slowTaskAlertingBackoffTimeMs;
         for (ExecutionTask task : inExecutionTasks()) {
           TopicPartition tp = task.proposal().topicPartition();

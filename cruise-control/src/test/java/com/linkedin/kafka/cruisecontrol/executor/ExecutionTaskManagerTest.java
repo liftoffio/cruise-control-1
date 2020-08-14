@@ -86,9 +86,17 @@ public class ExecutionTaskManagerTest {
     ReplicaPlacementInfo r0 = new ReplicaPlacementInfo(0);
     ReplicaPlacementInfo r1 = new ReplicaPlacementInfo(1);
     ReplicaPlacementInfo r2 = new ReplicaPlacementInfo(2);
+<<<<<<< HEAD
     // Make sure the proposal does not involve leader movement.
     ExecutionProposal proposal = new ExecutionProposal(tp, 10, r2, Arrays.asList(r0, r2), Arrays.asList(r2, r1));
     StrategyOptions strategyOptions = new StrategyOptions.Builder(generateExpectedCluster(proposal)).build();
+=======
+    for (List<ExecutionTaskState> sequence : testSequences) {
+      taskManager.clear();
+      // Make sure the proposal does not involve leader movement.
+      ExecutionProposal proposal =
+          new ExecutionProposal(tp, 10, r2, Arrays.asList(r0, r2), Arrays.asList(r2, r1));
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
 
     for (List<ExecutionTaskState> sequence : testSequences) {
       taskManager.clear();

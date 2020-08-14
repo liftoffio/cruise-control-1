@@ -444,7 +444,20 @@ public class ExecutorTest extends CCKafkaClientsIntegrationTestHarness {
     assertThrows(IllegalStateException.class,
                  () -> new Executor(config, null, new MetricRegistry(), EasyMock.mock(MetadataClient.class), null, null));
     Executor executor = new Executor(config, null, new MetricRegistry(), EasyMock.mock(MetadataClient.class),
+<<<<<<< HEAD
                                      null, EasyMock.mock(AnomalyDetectorManager.class));
+=======
+                                     null, EasyMock.mock(AnomalyDetector.class));
+
+    // Verify correctness of set/get requested execution progress check interval.
+    long defaultExecutionProgressCheckIntervalMs = config.getLong(ExecutorConfig.EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG);
+    assertEquals(defaultExecutionProgressCheckIntervalMs, executor.executionProgressCheckIntervalMs());
+    long minExecutionProgressCheckIntervalMs = config.getLong(ExecutorConfig.MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG);
+    executor.setRequestedExecutionProgressCheckIntervalMs(minExecutionProgressCheckIntervalMs);
+    assertEquals(minExecutionProgressCheckIntervalMs, executor.executionProgressCheckIntervalMs());
+    assertThrows(IllegalArgumentException.class,
+                 () -> executor.setRequestedExecutionProgressCheckIntervalMs(minExecutionProgressCheckIntervalMs - 1));
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
 
     // Verify correctness of add/drop recently removed/demoted brokers.
     assertFalse(executor.dropRecentlyRemovedBrokers(Collections.emptySet()));

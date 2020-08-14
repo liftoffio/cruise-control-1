@@ -125,7 +125,11 @@ public class CruiseControlState extends AbstractCruiseControlResponse {
         sb.append(String.format("%n%n%s %s:%n",
                                 _executorState.state() == ExecutorState.State.STOPPING_EXECUTION ? "Cancelled" : "Pending",
                                 taskTypeString));
+<<<<<<< HEAD
         for (ExecutionTask task : taskMap.get(ExecutionTaskState.PENDING)) {
+=======
+        for (ExecutionTask task :  taskMap.get(ExecutionTaskState.PENDING)) {
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
           sb.append(String.format("%s%n", task));
         }
         sb.append(String.format("%n%nIn progress %s:%n", taskTypeString));
@@ -133,6 +137,7 @@ public class CruiseControlState extends AbstractCruiseControlResponse {
           sb.append(String.format("%s%n", task));
         }
         sb.append(String.format("%n%nAborting %s:%n", taskTypeString));
+<<<<<<< HEAD
         for (ExecutionTask task : taskMap.get(ExecutionTaskState.ABORTING)) {
           sb.append(String.format("%s%n", task));
         }
@@ -142,6 +147,17 @@ public class CruiseControlState extends AbstractCruiseControlResponse {
         }
         sb.append(String.format("%n%nDead %s:%n", taskTypeString));
         for (ExecutionTask task : taskMap.get(ExecutionTaskState.DEAD)) {
+=======
+        for (ExecutionTask task :  taskMap.get(ExecutionTaskState.ABORTING)) {
+          sb.append(String.format("%s%n", task));
+        }
+        sb.append(String.format("%n%nAborted %s:%n", taskTypeString));
+        for (ExecutionTask task :  taskMap.get(ExecutionTaskState.ABORTED)) {
+          sb.append(String.format("%s%n", task));
+        }
+        sb.append(String.format("%n%nDead %s:%n", taskTypeString));
+        for (ExecutionTask task :  taskMap.get(ExecutionTaskState.DEAD)) {
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
           sb.append(String.format("%s%n", task));
         }
       });

@@ -366,9 +366,24 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
   /**
    * Sanity check to ensure that
    * <ul>
+<<<<<<< HEAD
    *   <li>{@link AnalyzerConfig#TOPIC_REPLICA_COUNT_BALANCE_MIN_GAP_CONFIG} <=
    *   {@link AnalyzerConfig#TOPIC_REPLICA_COUNT_BALANCE_MIN_GAP_CONFIG}</li>
    *   <li>{@link AnalyzerConfig#OVERPROVISIONED_MAX_REPLICAS_PER_BROKER_CONFIG} <= {@link AnalyzerConfig#MAX_REPLICAS_PER_BROKER_CONFIG}</li>
+=======
+   *   <li>{@link ExecutorConfig#MAX_NUM_CLUSTER_MOVEMENTS_CONFIG} >
+   *     {@link ExecutorConfig#NUM_CONCURRENT_PARTITION_MOVEMENTS_PER_BROKER_CONFIG}</li>
+   *   <li>{@link ExecutorConfig#MAX_NUM_CLUSTER_MOVEMENTS_CONFIG} >
+   *     {@link ExecutorConfig#NUM_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_CONFIG}</li>
+   *   <li>{@link ExecutorConfig#MAX_NUM_CLUSTER_MOVEMENTS_CONFIG} >=
+   *     {@link ExecutorConfig#NUM_CONCURRENT_LEADER_MOVEMENTS_CONFIG}</li>
+   *   <li>{@link ExecutorConfig#CONCURRENCY_ADJUSTER_MAX_PARTITION_MOVEMENTS_PER_BROKER_CONFIG} >
+   *     {@link ExecutorConfig#NUM_CONCURRENT_PARTITION_MOVEMENTS_PER_BROKER_CONFIG}</li>
+   *   <li>{@link ExecutorConfig#CONCURRENCY_ADJUSTER_MAX_PARTITION_MOVEMENTS_PER_BROKER_CONFIG} <=
+   *     {@link ExecutorConfig#MAX_NUM_CLUSTER_MOVEMENTS_CONFIG}</li>
+   *   <li>{@link ExecutorConfig#MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG} <=
+   *     {@link ExecutorConfig#EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG}</li>
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
    * </ul>
    */
   private void sanityCheckBalancingConstraints() {
@@ -387,6 +402,14 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
       throw new ConfigException(String.format("Maximum replicas per broker [%d] cannot be smaller than the "
                                               + "overprovisioned maximum replicas per broker [%d].",
                                               maxReplicasPerBroker, overprovisionedMaxReplicasPerBroker));
+    }
+    long minExecutionProgressCheckIntervalMs = getLong(ExecutorConfig.MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG);
+    long defaultExecutionProgressCheckIntervalMs = getLong(ExecutorConfig.EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG);
+    if (minExecutionProgressCheckIntervalMs > defaultExecutionProgressCheckIntervalMs) {
+      throw new ConfigException("Minimum execution progress check interval ["
+                                + minExecutionProgressCheckIntervalMs
+                                + "] cannot be greater than the default execution progress check interval ["
+                                + defaultExecutionProgressCheckIntervalMs + "].");
     }
   }
 

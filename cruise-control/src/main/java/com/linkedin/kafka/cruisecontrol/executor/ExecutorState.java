@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+
+import static com.linkedin.kafka.cruisecontrol.executor.ExecutionTask.TaskType.*;
+import static com.linkedin.kafka.cruisecontrol.executor.ExecutionTaskTracker.ExecutionTasksSummary;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
 import com.linkedin.kafka.cruisecontrol.servlet.response.JsonResponseField;
 import com.linkedin.kafka.cruisecontrol.servlet.response.JsonResponseClass;
 
@@ -309,9 +315,15 @@ public final class ExecutorState {
    * @return Number of finished movements, which is the sum of dead, completed, and aborted tasks.
    */
   public int numFinishedMovements(ExecutionTask.TaskType type) {
+<<<<<<< HEAD
     return _executionTasksSummary.taskStat().get(type).get(ExecutionTaskState.DEAD)
            + _executionTasksSummary.taskStat().get(type).get(ExecutionTaskState.COMPLETED)
            + _executionTasksSummary.taskStat().get(type).get(ExecutionTaskState.ABORTED);
+=======
+    return _executionTasksSummary.taskStat().get(type).get(ExecutionTaskState.DEAD) +
+           _executionTasksSummary.taskStat().get(type).get(ExecutionTaskState.COMPLETED) +
+           _executionTasksSummary.taskStat().get(type).get(ExecutionTaskState.ABORTED);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   }
 
   /**
@@ -393,6 +405,7 @@ public final class ExecutorState {
       case LEADER_MOVEMENT_TASK_IN_PROGRESS:
         populateUuidFieldInJsonStructure(execState, _uuid);
         execState.put(TRIGGERED_TASK_REASON, _reason);
+<<<<<<< HEAD
         execState.put(MAXIMUM_BROKER_LEADER_MOVEMENT_CONCURRENCY, _executionConcurrencySummary.getMaxExecutionConcurrency(
             ConcurrencyType.LEADERSHIP_BROKER));
         execState.put(MINIMUM_BROKER_LEADER_MOVEMENT_CONCURRENCY,
@@ -400,6 +413,9 @@ public final class ExecutorState {
         execState.put(AVERAGE_BROKER_LEADER_MOVEMENT_CONCURRENCY,
             _executionConcurrencySummary.getAvgExecutionConcurrency(ConcurrencyType.LEADERSHIP_BROKER));
         execState.put(CLUSTER_LEADER_MOVEMENT_CONCURRENCY, _executionConcurrencySummary.getClusterLeadershipMovementConcurrency());
+=======
+        execState.put(MAXIMUM_CONCURRENT_LEADER_MOVEMENTS, _maximumConcurrentLeaderMovements);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
         execState.put(NUM_PENDING_LEADERSHIP_MOVEMENTS, _executionTasksSummary.taskStat().get(LEADER_ACTION).get(ExecutionTaskState.PENDING));
         execState.put(NUM_FINISHED_LEADERSHIP_MOVEMENTS, numFinishedMovements(LEADER_ACTION));
         execState.put(NUM_TOTAL_LEADERSHIP_MOVEMENTS, numTotalMovements(LEADER_ACTION));
@@ -411,12 +427,16 @@ public final class ExecutorState {
         interBrokerPartitionMovementStats = _executionTasksSummary.taskStat().get(INTER_BROKER_REPLICA_ACTION);
         populateUuidFieldInJsonStructure(execState, _uuid);
         execState.put(TRIGGERED_TASK_REASON, _reason);
+<<<<<<< HEAD
         execState.put(MAXIMUM_CONCURRENT_INTER_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getMaxExecutionConcurrency(ConcurrencyType.INTER_BROKER_REPLICA));
         execState.put(MINIMUM_CONCURRENT_INTER_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getMinExecutionConcurrency(ConcurrencyType.INTER_BROKER_REPLICA));
         execState.put(AVERAGE_CONCURRENT_INTER_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getAvgExecutionConcurrency(ConcurrencyType.INTER_BROKER_REPLICA));
+=======
+        execState.put(MAXIMUM_CONCURRENT_INTER_BROKER_PARTITION_MOVEMENTS_PER_BROKER, _maximumConcurrentInterBrokerPartitionMovementsPerBroker);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
         execState.put(NUM_IN_PROGRESS_INTER_BROKER_PARTITION_MOVEMENTS, interBrokerPartitionMovementStats.get(ExecutionTaskState.IN_PROGRESS));
         execState.put(NUM_ABORTING_INTER_BROKER_PARTITION_MOVEMENTS, interBrokerPartitionMovementStats.get(ExecutionTaskState.ABORTING));
         execState.put(NUM_PENDING_INTER_BROKER_PARTITION_MOVEMENTS, interBrokerPartitionMovementStats.get(ExecutionTaskState.PENDING));
@@ -437,12 +457,16 @@ public final class ExecutorState {
         intraBrokerPartitionMovementStats = _executionTasksSummary.taskStat().get(INTRA_BROKER_REPLICA_ACTION);
         populateUuidFieldInJsonStructure(execState, _uuid);
         execState.put(TRIGGERED_TASK_REASON, _reason);
+<<<<<<< HEAD
         execState.put(MAXIMUM_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getMaxExecutionConcurrency(ConcurrencyType.INTRA_BROKER_REPLICA));
         execState.put(MINIMUM_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getMinExecutionConcurrency(ConcurrencyType.INTRA_BROKER_REPLICA));
         execState.put(AVERAGE_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getAvgExecutionConcurrency(ConcurrencyType.INTRA_BROKER_REPLICA));
+=======
+        execState.put(MAXIMUM_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_PER_BROKER, _maximumConcurrentIntraBrokerPartitionMovementsPerBroker);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
         execState.put(NUM_IN_PROGRESS_INTRA_BROKER_PARTITION_MOVEMENTS, intraBrokerPartitionMovementStats.get(ExecutionTaskState.IN_PROGRESS));
         execState.put(NUM_ABORTING_INTRA_BROKER_PARTITION_MOVEMENTS, intraBrokerPartitionMovementStats.get(ExecutionTaskState.ABORTING));
         execState.put(NUM_PENDING_INTRA_BROKER_PARTITION_MOVEMENTS, intraBrokerPartitionMovementStats.get(ExecutionTaskState.PENDING));
@@ -464,6 +488,7 @@ public final class ExecutorState {
         intraBrokerPartitionMovementStats = _executionTasksSummary.taskStat().get(INTRA_BROKER_REPLICA_ACTION);
         populateUuidFieldInJsonStructure(execState, _uuid);
         execState.put(TRIGGERED_TASK_REASON, _reason);
+<<<<<<< HEAD
         execState.put(MAXIMUM_CONCURRENT_INTER_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
                       _executionConcurrencySummary.getMaxExecutionConcurrency(ConcurrencyType.INTER_BROKER_REPLICA));
         execState.put(MAXIMUM_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_PER_BROKER,
@@ -471,6 +496,11 @@ public final class ExecutorState {
         execState.put(MAXIMUM_BROKER_LEADER_MOVEMENT_CONCURRENCY,
             _executionConcurrencySummary.getMaxExecutionConcurrency(ConcurrencyType.LEADERSHIP_BROKER));
         execState.put(CLUSTER_LEADER_MOVEMENT_CONCURRENCY, _executionConcurrencySummary.getClusterLeadershipMovementConcurrency());
+=======
+        execState.put(MAXIMUM_CONCURRENT_INTER_BROKER_PARTITION_MOVEMENTS_PER_BROKER, _maximumConcurrentInterBrokerPartitionMovementsPerBroker);
+        execState.put(MAXIMUM_CONCURRENT_INTRA_BROKER_PARTITION_MOVEMENTS_PER_BROKER, _maximumConcurrentIntraBrokerPartitionMovementsPerBroker);
+        execState.put(MAXIMUM_CONCURRENT_LEADER_MOVEMENTS, _maximumConcurrentLeaderMovements);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
         execState.put(NUM_CANCELLED_LEADERSHIP_MOVEMENTS, _executionTasksSummary.taskStat().get(LEADER_ACTION).get(ExecutionTaskState.PENDING));
         execState.put(NUM_IN_PROGRESS_INTER_BROKER_PARTITION_MOVEMENTS, interBrokerPartitionMovementStats.get(ExecutionTaskState.IN_PROGRESS));
         execState.put(NUM_ABORTING_INTER_BROKER_PARTITION_MOVEMENTS, interBrokerPartitionMovementStats.get(ExecutionTaskState.ABORTING));
@@ -506,7 +536,10 @@ public final class ExecutorState {
                                     ? String.format(", %s: %s", RECENTLY_REMOVED_BROKERS, _recentlyRemovedBrokers) : "";
     Map<ExecutionTaskState, Integer> interBrokerPartitionMovementStats;
     Map<ExecutionTaskState, Integer> intraBrokerPartitionMovementStats;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     switch (_state) {
       case NO_TASK_IN_PROGRESS:
         return String.format("{%s: %s%s%s}", STATE, _state, recentlyDemotedBrokers, recentlyRemovedBrokers);

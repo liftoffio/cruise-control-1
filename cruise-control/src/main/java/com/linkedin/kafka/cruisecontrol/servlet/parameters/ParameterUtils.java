@@ -44,7 +44,11 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
 import static com.linkedin.cruisecontrol.CruiseControlUtils.currentUtcDate;
+=======
+import static com.linkedin.kafka.cruisecontrol.KafkaCruiseControlUtils.currentUtcDate;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
 import static com.linkedin.kafka.cruisecontrol.servlet.CruiseControlEndPoint.ADD_BROKER;
 import static com.linkedin.kafka.cruisecontrol.servlet.CruiseControlEndPoint.DEMOTE_BROKER;
 import static com.linkedin.kafka.cruisecontrol.servlet.CruiseControlEndPoint.FIX_OFFLINE_REPLICAS;
@@ -857,8 +861,14 @@ public final class ParameterUtils {
    * @param requestContext The Http request.
    * @return Execution progress check interval in milliseconds.
    */
+<<<<<<< HEAD
   static Long executionProgressCheckIntervalMs(CruiseControlRequestContext requestContext) {
     return getLongParam(requestContext, EXECUTION_PROGRESS_CHECK_INTERVAL_MS_PARAM, null);
+=======
+  static Long executionProgressCheckIntervalMs(HttpServletRequest request) {
+    String parameterString = caseSensitiveParameterName(request.getParameterMap(), EXECUTION_PROGRESS_CHECK_INTERVAL_MS_PARAM);
+    return parameterString == null ? null : Long.parseLong(request.getParameter(parameterString));
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   }
 
   /**
@@ -891,7 +901,11 @@ public final class ParameterUtils {
     if (parameterString == null) {
       return null;
     }
+<<<<<<< HEAD
     int concurrentMovementsPerBroker = Integer.parseInt(requestContext.getParameter(parameterString));
+=======
+    int concurrentMovementsPerBroker = Integer.parseInt(request.getParameter(parameterString));
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     if (concurrentMovementsPerBroker <= 0) {
       throw new UserRequestException("The requested movement concurrency must be positive (Requested: " + concurrentMovementsPerBroker + ").");
     }

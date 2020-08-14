@@ -91,7 +91,11 @@ public class ExecutionTask implements Comparable<ExecutionTask> {
     }
     _executionId = executionId;
     _proposal = proposal;
+<<<<<<< HEAD
     _brokerId = brokerId == null ? -1 : brokerId;
+=======
+    _brokerId =  brokerId == null ? -1 : brokerId;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     _state = ExecutionTaskState.PENDING;
     _type = type;
     _startTimeMs = -1L;
@@ -281,7 +285,11 @@ public class ExecutionTask implements Comparable<ExecutionTask> {
      * @return enumerated values in the same order as values()
      */
     public static List<TaskType> cachedValues() {
+<<<<<<< HEAD
       return Collections.unmodifiableList(CACHED_VALUES);
+=======
+      return CACHED_VALUES;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     }
   }
 

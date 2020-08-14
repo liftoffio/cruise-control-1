@@ -54,8 +54,11 @@ public final class ExecutionUtils {
   public static final int DEFAULT_RETRY_BACKOFF_BASE = 2;
   public static final long METADATA_REFRESH_BACKOFF = 100L;
   public static final long METADATA_EXPIRY_MS = Long.MAX_VALUE;
+<<<<<<< HEAD
   public static final Duration MIN_ISR_CACHE_CLEANER_PERIOD = Duration.ofMinutes(10);
   public static final Duration MIN_ISR_CACHE_CLEANER_INITIAL_DELAY = Duration.ofMinutes(0);
+=======
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   // A special timestamp to indicate that a broker is a permanent part of recently removed or demoted broker set.
   public static final long PERMANENT_TIMESTAMP = 0L;
   public static final String EXECUTION_STARTED = "execution-started";

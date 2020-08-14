@@ -61,7 +61,11 @@ public class ExecutionTaskTracker {
     List<TaskType> taskTypes = TaskType.cachedValues();
     _tasksByType = new HashMap<>();
     for (TaskType type : taskTypes) {
+<<<<<<< HEAD
       Map<ExecutionTaskState, Set<ExecutionTask>> taskMap = new HashMap<>();
+=======
+      Map<ExecutionTaskState, Set<ExecutionTask>> taskMap = new HashMap<>(states.size());
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
       for (ExecutionTaskState state : states) {
         taskMap.put(state, new HashSet<>());
       }
@@ -91,6 +95,7 @@ public class ExecutionTaskTracker {
   private void registerGaugeSensors(MetricRegistry dropwizardMetricRegistry) {
     for (TaskType type : TaskType.cachedValues()) {
       for (ExecutionTaskState state : ExecutionTaskState.cachedValues()) {
+<<<<<<< HEAD
         String typeString = type == TaskType.INTER_BROKER_REPLICA_ACTION
                             ? INTER_BROKER_REPLICA_ACTION : type == TaskType.INTRA_BROKER_REPLICA_ACTION
                                                             ? INTRA_BROKER_REPLICA_ACTION : LEADERSHIP_ACTION;
@@ -101,6 +106,18 @@ public class ExecutionTaskTracker {
                                                                       ? ABORTED : state == ExecutionTaskState.COMPLETED
                                                                                   ? COMPLETED : DEAD;
         dropwizardMetricRegistry.register(MetricRegistry.name(EXECUTOR_SENSOR, typeString + "-" + stateString),
+=======
+        String typeString =  type == TaskType.INTER_BROKER_REPLICA_ACTION ? INTER_BROKER_REPLICA_ACTION :
+                             type == TaskType.INTRA_BROKER_REPLICA_ACTION ? INTRA_BROKER_REPLICA_ACTION :
+                                                                            LEADERSHIP_ACTION;
+        String stateString =  state == ExecutionTaskState.PENDING     ? PENDING :
+                              state == ExecutionTaskState.IN_PROGRESS ? IN_PROGRESS :
+                              state == ExecutionTaskState.ABORTING    ? ABORTING :
+                              state == ExecutionTaskState.ABORTED     ? ABORTED :
+                              state == ExecutionTaskState.COMPLETED   ? COMPLETED :
+                                                           DEAD;
+        dropwizardMetricRegistry.register(MetricRegistry.name(metricName, typeString + "-" + stateString),
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
                                           (Gauge<Integer>) () -> (state == ExecutionTaskState.PENDING && _stopRequested)
                                                                  ? 0 : _tasksByType.get(type).get(state).size());
       }
@@ -176,9 +193,15 @@ public class ExecutionTaskTracker {
   }
 
   private void updateDataMovement(ExecutionTask task) {
+<<<<<<< HEAD
     long dataToMove = task.type() == TaskType.INTRA_BROKER_REPLICA_ACTION
                       ? task.proposal().intraBrokerDataToMoveInMB() : task.type() == TaskType.INTER_BROKER_REPLICA_ACTION
                                                                       ? task.proposal().interBrokerDataToMoveInMB() : 0;
+=======
+    long dataToMove = task.type() == TaskType.INTRA_BROKER_REPLICA_ACTION ? task.proposal().intraBrokerDataToMoveInMB() :
+                      task.type() == TaskType.INTER_BROKER_REPLICA_ACTION ? task.proposal().interBrokerDataToMoveInMB() :
+                                                                            0;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     if (task.state() == ExecutionTaskState.IN_PROGRESS) {
       if (task.type() == TaskType.INTRA_BROKER_REPLICA_ACTION) {
         _remainingIntraBrokerDataToMoveInMB -= dataToMove;
@@ -187,10 +210,16 @@ public class ExecutionTaskTracker {
         _remainingInterBrokerDataToMoveInMB -= dataToMove;
         _inExecutionInterBrokerDataMovementInMB += dataToMove;
       }
+<<<<<<< HEAD
     } else if (task.state() == ExecutionTaskState.ABORTED
                || task.state() == ExecutionTaskState.DEAD
                || task.state() == ExecutionTaskState.COMPLETED) {
       _partitionDataMovementRateMeter.mark(dataToMove);
+=======
+    } else if (task.state() == ExecutionTaskState.ABORTED ||
+            task.state() == ExecutionTaskState.DEAD ||
+            task.state() == ExecutionTaskState.COMPLETED) {
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
       if (task.type() == TaskType.INTRA_BROKER_REPLICA_ACTION) {
         _inExecutionIntraBrokerDataMovementInMB -= dataToMove;
         _finishedIntraBrokerDataMovementInMB += dataToMove;
@@ -232,7 +261,11 @@ public class ExecutionTaskTracker {
    * @return The statistic of task execution state.
    */
   private Map<TaskType, Map<ExecutionTaskState, Integer>> taskStat() {
+<<<<<<< HEAD
     Map<TaskType, Map<ExecutionTaskState, Integer>> taskStatMap = new HashMap<>();
+=======
+    Map<TaskType, Map<ExecutionTaskState, Integer>> taskStatMap = new HashMap<>(TaskType.cachedValues().size());
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     for (TaskType type : TaskType.cachedValues()) {
       taskStatMap.put(type, new HashMap<>());
       _tasksByType.get(type).forEach((k, v) -> taskStatMap.get(type).put(k, v.size()));
@@ -247,7 +280,11 @@ public class ExecutionTaskTracker {
    * @return                        A filtered list of tasks.
    */
   private Map<TaskType, Map<ExecutionTaskState, Set<ExecutionTask>>> filteredTasksByState(Set<TaskType> taskTypesToGetFullList) {
+<<<<<<< HEAD
     Map<TaskType, Map<ExecutionTaskState, Set<ExecutionTask>>> tasksByState = new HashMap<>();
+=======
+    Map<TaskType, Map<ExecutionTaskState, Set<ExecutionTask>>> tasksByState = new HashMap<>(taskTypesToGetFullList.size());
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     for (TaskType type : taskTypesToGetFullList) {
       tasksByState.put(type, new HashMap<>());
       _tasksByType.get(type).forEach((k, v) -> tasksByState.get(type).put(k, new HashSet<>(v)));
@@ -286,9 +323,15 @@ public class ExecutionTaskTracker {
    * @return Number of finished inter broker partition movements, which is the sum of completed, dead, and aborted tasks.
    */
   public int numFinishedInterBrokerPartitionMovements() {
+<<<<<<< HEAD
     return _tasksByType.get(TaskType.INTER_BROKER_REPLICA_ACTION).get(ExecutionTaskState.COMPLETED).size()
            + _tasksByType.get(TaskType.INTER_BROKER_REPLICA_ACTION).get(ExecutionTaskState.DEAD).size()
            + _tasksByType.get(TaskType.INTER_BROKER_REPLICA_ACTION).get(ExecutionTaskState.ABORTED).size();
+=======
+    return _tasksByType.get(TaskType.INTER_BROKER_REPLICA_ACTION).get(ExecutionTaskState.COMPLETED).size() +
+           _tasksByType.get(TaskType.INTER_BROKER_REPLICA_ACTION).get(ExecutionTaskState.DEAD).size() +
+           _tasksByType.get(TaskType.INTER_BROKER_REPLICA_ACTION).get(ExecutionTaskState.ABORTED).size();
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   }
 
   public long finishedInterBrokerDataMovementInMB() {
@@ -322,6 +365,7 @@ public class ExecutionTaskTracker {
    * @return Number of finished leadership movements, which is the sum of completed, dead, and aborted tasks.
    */
   public int numFinishedLeadershipMovements() {
+<<<<<<< HEAD
     return _tasksByType.get(TaskType.LEADER_ACTION).get(ExecutionTaskState.COMPLETED).size()
            + _tasksByType.get(TaskType.LEADER_ACTION).get(ExecutionTaskState.DEAD).size()
            + _tasksByType.get(TaskType.LEADER_ACTION).get(ExecutionTaskState.ABORTED).size();
@@ -329,6 +373,15 @@ public class ExecutionTaskTracker {
 
   public int numRemainingIntraBrokerPartitionMovements() {
     return _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.PENDING).size();
+=======
+    return _tasksByType.get(TaskType.LEADER_ACTION).get(ExecutionTaskState.COMPLETED).size() +
+           _tasksByType.get(TaskType.LEADER_ACTION).get(ExecutionTaskState.DEAD).size() +
+           _tasksByType.get(TaskType.LEADER_ACTION).get(ExecutionTaskState.ABORTED).size();
+  }
+
+  public int numRemainingIntraBrokerPartitionMovements() {
+    return  _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.PENDING).size();
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   }
 
   public long remainingIntraBrokerDataToMoveInMB() {
@@ -339,9 +392,15 @@ public class ExecutionTaskTracker {
    * @return Number of finished intra broker partition movements, which is the sum of completed, dead, and aborted tasks.
    */
   public int numFinishedIntraBrokerPartitionMovements() {
+<<<<<<< HEAD
     return _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.COMPLETED).size()
            + _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.DEAD).size()
            + _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.ABORTED).size();
+=======
+    return  _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.COMPLETED).size() +
+            _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.DEAD).size() +
+            _tasksByType.get(TaskType.INTRA_BROKER_REPLICA_ACTION).get(ExecutionTaskState.ABORTED).size();
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   }
 
   public long finishedIntraBrokerDataToMoveInMB() {
@@ -423,11 +482,19 @@ public class ExecutionTaskTracker {
     }
 
     public Map<TaskType, Map<ExecutionTaskState, Integer>> taskStat() {
+<<<<<<< HEAD
       return Collections.unmodifiableMap(_taskStat);
     }
 
     public Map<TaskType, Map<ExecutionTaskState, Set<ExecutionTask>>> filteredTasksByState() {
       return Collections.unmodifiableMap(_filteredTasksByState);
+=======
+      return _taskStat;
+    }
+
+    public Map<TaskType, Map<ExecutionTaskState, Set<ExecutionTask>>> filteredTasksByState() {
+      return _filteredTasksByState;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
     }
   }
 }

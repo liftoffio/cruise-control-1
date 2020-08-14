@@ -555,7 +555,11 @@ public final class ExecutorConfig {
    * <code>min.execution.progress.check.interval.ms</code>
    */
   public static final String MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS_CONFIG = "min.execution.progress.check.interval.ms";
+<<<<<<< HEAD
   public static final long DEFAULT_MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS = TimeUnit.SECONDS.toMillis(5);
+=======
+  public static final long DEFAULT_MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS = 5000L;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   public static final String MIN_EXECUTION_PROGRESS_CHECK_INTERVAL_MS_DOC = "The minimum execution progress check interval that users "
       + "can dynamically set the execution progress check interval to.";
 
@@ -563,11 +567,16 @@ public final class ExecutorConfig {
    * <code>slow.task.alerting.backoff.ms</code>
    */
   public static final String SLOW_TASK_ALERTING_BACKOFF_TIME_MS_CONFIG = "slow.task.alerting.backoff.ms";
+<<<<<<< HEAD
   public static final long DEFAULT_SLOW_TASK_ALERTING_BACKOFF_TIME_MS = TimeUnit.MINUTES.toMillis(1);
+=======
+  public static final long DEFAULT_SLOW_TASK_ALERTING_BACKOFF_TIME_MS = 60000L;
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   public static final String SLOW_TASK_ALERTING_BACKOFF_TIME_MS_DOC = "The minimum interval between slow task alerts. This backoff "
       + "helps bundling slow tasks to report rather than individually reporting them upon detection.";
 
   /**
+<<<<<<< HEAD
    * <code>concurrency.adjuster.num.min.isr.check</code>
    */
   public static final String CONCURRENCY_ADJUSTER_NUM_MIN_ISR_CHECK_CONFIG = "concurrency.adjuster.num.min.isr.check";
@@ -614,6 +623,8 @@ public final class ExecutorConfig {
   }
 
   /**
+=======
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
    * Define configs for Executor.
    *
    * @param configDef Config definition.
@@ -962,6 +973,7 @@ public final class ExecutorConfig {
                             DEFAULT_SLOW_TASK_ALERTING_BACKOFF_TIME_MS,
                             atLeast(0),
                             ConfigDef.Importance.MEDIUM,
+<<<<<<< HEAD
                             SLOW_TASK_ALERTING_BACKOFF_TIME_MS_DOC)
                     .define(CONCURRENCY_ADJUSTER_NUM_MIN_ISR_CHECK_CONFIG,
                             ConfigDef.Type.INT,
@@ -991,5 +1003,8 @@ public final class ExecutorConfig {
                             DEFAULT_AUTO_STOP_EXTERNAL_AGENT,
                             ConfigDef.Importance.MEDIUM,
                             AUTO_STOP_EXTERNAL_AGENT_DOC);
+=======
+                            SLOW_TASK_ALERTING_BACKOFF_TIME_MS_DOC);
+>>>>>>> 7af2c90b (Make min execution progress check interval and slow task alerting backoff configurable (#1313))
   }
 }
