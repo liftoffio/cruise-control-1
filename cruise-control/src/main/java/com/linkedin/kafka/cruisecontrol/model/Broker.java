@@ -23,6 +23,11 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Function;
+<<<<<<< HEAD
+=======
+import java.util.stream.Collectors;
+
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
 import org.apache.kafka.common.TopicPartition;
 
 import static com.linkedin.cruisecontrol.common.utils.Utils.validateNotNull;
@@ -183,6 +188,20 @@ public class Broker implements Serializable, Comparable<Broker> {
   }
 
   /**
+   * Get leader replicas for topic.
+   *
+   * @param topic Topic of the requested replicas.
+   * @return Leader replicas in this broker sharing the given topic.
+   */
+  public Collection<Replica> leadersOfTopicInBroker(String topic) {
+    Map<Integer, Replica> topicReplicas = _topicReplicas.get(topic);
+    if (topicReplicas == null) {
+      return Collections.emptySet();
+    }
+    return topicReplicas.values().stream().filter(r -> r.isLeader()).collect(Collectors.toList());
+  }
+
+  /**
    * Get number of replicas from the given topic in this broker.
    *
    * @param topic Topic for which both the leader and follower replica count will be returned.
@@ -194,6 +213,7 @@ public class Broker implements Serializable, Comparable<Broker> {
   }
 
   /**
+<<<<<<< HEAD
    * Get number of only leader replicas from the given topic in this broker.
    *
    * @param topicName Topic for which the replica count will be returned.
@@ -205,6 +225,23 @@ public class Broker implements Serializable, Comparable<Broker> {
 
   /**
    * @return {@code true} if the broker is not dead, {@code false} otherwise.
+=======
+   * Get number of leader replicas from the given topic in this broker.
+   *
+   * @param topic Topic for which the leader replica count will be returned.
+   * @return The number of leader replicas from the given topic in this broker.
+   */
+  public int numLeadersOfTopicInBroker(String topic) {
+    Map<Integer, Replica> topicReplicas = _topicReplicas.get(topic);
+    if (topicReplicas == null) {
+      return 0;
+    }
+    return (int) topicReplicas.values().stream().filter(r -> r.isLeader()).count();
+  }
+
+  /**
+   * @return True if the broker is not dead, false otherwise.
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
    */
   public boolean isAlive() {
     return _state != State.DEAD;

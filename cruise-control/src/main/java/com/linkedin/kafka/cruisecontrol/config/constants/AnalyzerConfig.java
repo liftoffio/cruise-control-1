@@ -115,6 +115,7 @@ public final class AnalyzerConfig {
       + "should not be above 1.80x of average replica count of all brokers for the same topic.";
 
   /**
+<<<<<<< HEAD
    * <code>topic.replica.count.balance.min.gap</code>
    */
   public static final String TOPIC_REPLICA_COUNT_BALANCE_MIN_GAP_CONFIG = "topic.replica.count.balance.min.gap";
@@ -133,6 +134,15 @@ public final class AnalyzerConfig {
       + " the average replica count for each topic. A balance limit is set via topic.replica.count.balance.threshold config."
       + " If the difference between the computed limit and the average replica count for the relevant topic is greater than"
       + " the value specified by this config, the limit is adjusted accordingly.";
+=======
+   * <code>topic.leader.count.balance.threshold</code>
+   */
+  public static final String TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG = "topic.leader.count.balance.threshold";
+  public static final double DEFAULT_TOPIC_LEADER_COUNT_BALANCE_THRESHOLD = 3.00;
+  public static final String TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_DOC = "The maximum allowed extent of unbalance for "
+          + "leader replica distribution from each topic. For example, 1.80 means the highest topic leader replica count of a broker "
+          + "should not be above 1.80x of average leader replica count of all brokers for the same topic.";
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
 
   /**
    * <code>cpu.capacity.threshold</code>
@@ -512,6 +522,7 @@ public final class AnalyzerConfig {
                             atLeast(1),
                             ConfigDef.Importance.HIGH,
                             TOPIC_REPLICA_COUNT_BALANCE_THRESHOLD_DOC)
+<<<<<<< HEAD
                     .define(TOPIC_REPLICA_COUNT_BALANCE_MIN_GAP_CONFIG,
                             ConfigDef.Type.INT,
                             DEFAULT_TOPIC_REPLICA_COUNT_BALANCE_MIN_GAP,
@@ -524,6 +535,14 @@ public final class AnalyzerConfig {
                             atLeast(1),
                             ConfigDef.Importance.MEDIUM,
                             TOPIC_REPLICA_COUNT_BALANCE_MAX_GAP_DOC)
+=======
+                    .define(TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG,
+                            ConfigDef.Type.DOUBLE,
+                            DEFAULT_TOPIC_LEADER_COUNT_BALANCE_THRESHOLD,
+                            atLeast(1),
+                            ConfigDef.Importance.HIGH,
+                            TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_DOC)
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
                     .define(CPU_CAPACITY_THRESHOLD_CONFIG,
                             ConfigDef.Type.DOUBLE,
                             DEFAULT_CPU_CAPACITY_THRESHOLD,

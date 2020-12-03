@@ -24,6 +24,7 @@ import com.linkedin.kafka.cruisecontrol.analyzer.goals.RackAwareDistributionGoal
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.RackAwareGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaCapacityGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaDistributionGoal;
+import com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicLeaderDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicReplicaDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.kafkaassigner.KafkaAssignerDiskUsageDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.kafkaassigner.KafkaAssignerEvenRackAwareGoal;
@@ -118,6 +119,7 @@ public class RandomClusterTest {
                                                     LeaderReplicaDistributionGoal.class.getName(),
                                                     LeaderBytesInDistributionGoal.class.getName(),
                                                     TopicReplicaDistributionGoal.class.getName(),
+                                                    TopicLeaderDistributionGoal.class.getName(),
                                                     PreferredLeaderElectionGoal.class.getName());
 
     List<String> kafkaAssignerGoals = Arrays.asList(KafkaAssignerEvenRackAwareGoal.class.getName(),

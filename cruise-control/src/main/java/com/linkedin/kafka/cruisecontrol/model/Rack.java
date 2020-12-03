@@ -100,6 +100,39 @@ public class Rack implements Serializable {
   }
 
   /**
+<<<<<<< HEAD
+=======
+   * Get the number of replicas with the given topic name in this rack.
+   *
+   * @param topic Name of the topic for which the number of replicas in this rack will be counted.
+   * @return Number of replicas with the given topic name in this rack.
+   */
+  public int numTopicReplicas(String topic) {
+    int numTopicReplicas = 0;
+
+    for (Host host : _hosts.values()) {
+      numTopicReplicas += host.numTopicReplicas(topic);
+    }
+    return numTopicReplicas;
+  }
+
+  /**
+   * Get the number of leader replicas with the given topic name in this rack.
+   *
+   * @param topic Name of the topic for which the number of leader replicas in this rack will be counted.
+   * @return Number of leader replicas with the given topic name in this rack.
+   */
+  public int numTopicLeaders(String topic) {
+    int numTopicLeaders = 0;
+
+    for (Host host : _hosts.values()) {
+      numTopicLeaders += host.numTopicLeaders(topic);
+    }
+    return numTopicLeaders;
+  }
+
+  /**
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
    * @return A set of topic names in the cluster.
    */
   public Set<String> topics() {

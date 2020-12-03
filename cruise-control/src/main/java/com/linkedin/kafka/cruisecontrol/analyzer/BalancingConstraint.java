@@ -23,12 +23,20 @@ import java.util.regex.Pattern;
  */
 public class BalancingConstraint {
   private final Map<Resource, Double> _resourceBalancePercentage;
+<<<<<<< HEAD
   private final double _replicaBalancePercentage;
   private final double _leaderReplicaBalancePercentage;
   private final double _topicReplicaBalancePercentage;
   private final int _topicReplicaBalanceMinGap;
   private final int _topicReplicaBalanceMaxGap;
   private final double _goalViolationDistributionThresholdMultiplier;
+=======
+  private final Double _replicaBalancePercentage;
+  private final Double _leaderReplicaBalancePercentage;
+  private final Double _topicReplicaBalancePercentage;
+  private final Double _topicLeaderBalancePercentage;
+  private final Double _goalViolationDistributionThresholdMultiplier;
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
   private final Map<Resource, Double> _capacityThreshold;
   private final Map<Resource, Double> _lowUtilizationThreshold;
   private final long _maxReplicasPerBroker;
@@ -76,8 +84,12 @@ public class BalancingConstraint {
     _replicaBalancePercentage = config.getDouble(AnalyzerConfig.REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG);
     _leaderReplicaBalancePercentage = config.getDouble(AnalyzerConfig.LEADER_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG);
     _topicReplicaBalancePercentage = config.getDouble(AnalyzerConfig.TOPIC_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG);
+<<<<<<< HEAD
     _topicReplicaBalanceMinGap = config.getInt(AnalyzerConfig.TOPIC_REPLICA_COUNT_BALANCE_MIN_GAP_CONFIG);
     _topicReplicaBalanceMaxGap = config.getInt(AnalyzerConfig.TOPIC_REPLICA_COUNT_BALANCE_MAX_GAP_CONFIG);
+=======
+    _topicLeaderBalancePercentage = config.getDouble(AnalyzerConfig.TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG);
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
     _goalViolationDistributionThresholdMultiplier = config.getDouble(AnalyzerConfig.GOAL_VIOLATION_DISTRIBUTION_THRESHOLD_MULTIPLIER_CONFIG);
     // Set default value for the topics that must have a minimum number of leader replicas on brokers that are not
     // excluded for replica move.
@@ -113,6 +125,7 @@ public class BalancingConstraint {
     props.put(AnalyzerConfig.NETWORK_INBOUND_LOW_UTILIZATION_THRESHOLD_CONFIG, _lowUtilizationThreshold.get(Resource.NW_IN).toString());
     props.put(AnalyzerConfig.NETWORK_OUTBOUND_LOW_UTILIZATION_THRESHOLD_CONFIG, _lowUtilizationThreshold.get(Resource.NW_OUT).toString());
 
+<<<<<<< HEAD
     props.put(AnalyzerConfig.MAX_REPLICAS_PER_BROKER_CONFIG, Long.toString(_maxReplicasPerBroker));
     props.put(AnalyzerConfig.OVERPROVISIONED_MAX_REPLICAS_PER_BROKER_CONFIG, Long.toString(_overprovisionedMaxReplicasPerBroker));
     props.put(AnalyzerConfig.OVERPROVISIONED_MIN_BROKERS_CONFIG, Integer.toString(_overprovisionedMinBrokers));
@@ -128,6 +141,15 @@ public class BalancingConstraint {
     props.put(AnalyzerConfig.FAST_MODE_PER_BROKER_MOVE_TIMEOUT_MS_CONFIG, Long.toString(_fastModePerBrokerMoveTimeoutMs));
     props.put(AnalyzerConfig.BROKER_SET_RESOLVER_CLASS_CONFIG, _brokerSetResolver.getClass().getName());
     props.put(AnalyzerConfig.REPLICA_TO_BROKER_SET_MAPPING_POLICY_CLASS_CONFIG, _replicaToBrokerSetMappingPolicy.getClass().getName());
+=======
+    props.put(AnalyzerConfig.MAX_REPLICAS_PER_BROKER_CONFIG, _maxReplicasPerBroker.toString());
+    props.put(AnalyzerConfig.REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG, _replicaBalancePercentage.toString());
+    props.put(AnalyzerConfig.LEADER_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG, _leaderReplicaBalancePercentage.toString());
+    props.put(AnalyzerConfig.TOPIC_REPLICA_COUNT_BALANCE_THRESHOLD_CONFIG, _topicReplicaBalancePercentage.toString());
+    props.put(AnalyzerConfig.TOPIC_LEADER_COUNT_BALANCE_THRESHOLD_CONFIG, _topicLeaderBalancePercentage.toString());
+    props.put(AnalyzerConfig.GOAL_VIOLATION_DISTRIBUTION_THRESHOLD_MULTIPLIER_CONFIG,
+              _goalViolationDistributionThresholdMultiplier.toString());
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
     return props;
   }
 
@@ -184,6 +206,7 @@ public class BalancingConstraint {
   }
 
   /**
+<<<<<<< HEAD
    * @return Topic replica balance minimum gap for {@link com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicReplicaDistributionGoal}.
    */
   public int topicReplicaBalanceMinGap() {
@@ -195,6 +218,13 @@ public class BalancingConstraint {
    */
   public int topicReplicaBalanceMaxGap() {
     return _topicReplicaBalanceMaxGap;
+=======
+   * @return Topic leader replica balance percentage for
+   * {@link com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicLeaderDistributionGoal}.
+   */
+  public Double topicLeaderBalancePercentage() {
+    return _topicLeaderBalancePercentage;
+>>>>>>> 0ff50ce8 (Implement TopicLeaderDistributionGoal)
   }
 
   /**

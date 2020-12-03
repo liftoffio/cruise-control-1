@@ -25,6 +25,7 @@ import com.linkedin.kafka.cruisecontrol.analyzer.goals.RackAwareGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaCapacityGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicReplicaDistributionGoal;
+import com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicLeaderDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.kafkaassigner.KafkaAssignerDiskUsageDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.kafkaassigner.KafkaAssignerEvenRackAwareGoal;
 import com.linkedin.kafka.cruisecontrol.config.KafkaCruiseControlConfig;
@@ -115,6 +116,7 @@ public class DeterministicClusterTest {
                                                     LeaderReplicaDistributionGoal.class.getName(),
                                                     LeaderBytesInDistributionGoal.class.getName(),
                                                     TopicReplicaDistributionGoal.class.getName(),
+                                                    TopicLeaderDistributionGoal.class.getName(),
                                                     PreferredLeaderElectionGoal.class.getName());
 
     List<OptimizationVerifier.Verification> verifications = Arrays.asList(NEW_BROKERS, BROKEN_BROKERS, REGRESSION);
