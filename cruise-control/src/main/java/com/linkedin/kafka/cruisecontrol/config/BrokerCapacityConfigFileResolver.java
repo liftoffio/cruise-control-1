@@ -252,7 +252,7 @@ public class BrokerCapacityConfigFileResolver implements BrokerCapacityConfigRes
   @SuppressWarnings("unchecked")
   private static Map<String, Double> getDiskCapacityByLogDir(Map<Resource, Object> brokerCapacity) {
     if (!isJBOD(brokerCapacity)) {
-      return Collections.emptyMap();
+      return null;
     }
 
     Map<String, String> stringDiskCapacityByLogDir = (Map<String, String>) brokerCapacity.get(Resource.DISK);

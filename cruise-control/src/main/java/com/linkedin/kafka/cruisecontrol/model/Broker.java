@@ -79,7 +79,7 @@ public class Broker implements Serializable, Comparable<Broker> {
                                                                   : entry.getValue();
     }
 
-    if (populateReplicaPlacementInfo) {
+    if (populateReplicaPlacementInfo && brokerCapacityInfo.diskCapacityByLogDir() != null) {
       _diskByLogdir = new TreeMap<>();
       brokerCapacityInfo.diskCapacityByLogDir().forEach((key, value) -> _diskByLogdir.put(key, new Disk(key, this, value)));
     } else {
